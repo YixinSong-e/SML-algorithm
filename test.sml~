@@ -1,0 +1,70 @@
+val input = TextIO.openIn("input.txt");
+
+fun printInt (a:int) =
+    print(Int.toString(a)^" ");
+
+fun printIntInf (a:IntInf.int) =
+    print(IntInf.toString(a)^" ");
+
+
+fun printReal (a:real) =
+    print(Real.toString(a)^" ");
+
+fun printString (a:string) =
+    print(a^" ");
+
+fun getInt () =
+    Option.valOf (TextIO.scanStream (Int.scan StringCvt.DEC) input);
+
+fun getIntInf () =
+    Option.valOf (TextIO.scanStream (IntInf.scan StringCvt.DEC) input);
+
+fun getReal () =
+    Option.valOf (TextIO.scanStream (Real.scan) input);
+
+fun printEndOfLine () =
+    print("\n");
+
+fun printIntTable ( [] ) = ()
+  | printIntTable ( x::xs ) = 
+    let
+	val tmp = printInt(x)
+    in
+	printIntTable(xs)
+    end;
+
+fun printIntInfTable ( [] ) = ()
+  | printIntInfTable ( x::xs ) = 
+    let
+	val tmp = printIntInf(x)
+    in
+	printIntInfTable(xs)
+    end;
+
+fun getIntTable ( 0 ) = []
+  | getIntTable ( N:int) = getInt()::getIntTable(N-1);
+
+fun getIntInfTable ( 0 ) = []
+  | getIntInfTable ( N:int) = getIntInf()::getIntInfTable(N-1);
+
+fun getIntVector ( 0 ) =  Vector.fromList []
+  | getIntVector ( N:int) = Vector.fromList(getIntTable(N));
+
+fun getIntInfVector ( 0 ) = Vector.fromList []
+  | getIntInfVector ( N:int) = Vector.fromList(getIntInfTable(N));
+
+
+(*****Begin*****)
+val n:IntInf.int = getIntInf();
+fun shai(curr:IntInf.int,last:IntInf.int):bool
+= if(curr * curr > last) then true 
+else let
+	val k = last mod curr
+	in
+	if(k = 0) then false else shai(curr+1,last)
+	end;
+val bo = shai(2,n);
+if(bo = True) then printString("True") else printString("False");
+(*****End*****)
+
+

@@ -1,0 +1,88 @@
+val input = TextIO.openIn("input.txt");
+
+fun printInt (a:int) =
+    print(Int.toString(a)^" ");
+
+fun printIntInf (a:IntInf.int) =
+    print(IntInf.toString(a)^" ");
+
+
+fun printReal (a:real) =
+    print(Real.toString(a)^" ");
+
+fun printString (a:string) =
+    print(a^" ");
+
+fun getInt () =
+    Option.valOf (TextIO.scanStream (Int.scan StringCvt.DEC) input);
+
+fun getIntInf () =
+    Option.valOf (TextIO.scanStream (IntInf.scan StringCvt.DEC) input);
+
+fun getReal () =
+    Option.valOf (TextIO.scanStream (Real.scan) input);
+
+fun printEndOfLine () =
+    print("\n");
+
+fun printIntTable ( [] ) = ()
+  | printIntTable ( x::xs ) = 
+    let
+	val tmp = printInt(x)
+    in
+	printIntTable(xs)
+    end;
+
+fun printIntInfTable ( [] ) = ()
+  | printIntInfTable ( x::xs ) = 
+    let
+	val tmp = printIntInf(x)
+    in
+	printIntInfTable(xs)
+    end;
+
+fun getIntTable ( 0 ) = []
+  | getIntTable ( N:int) = getInt()::getIntTable(N-1);
+
+fun getIntInfTable ( 0 ) = []
+  | getIntInfTable ( N:int) = getIntInf()::getIntInfTable(N-1);
+
+fun getIntVector ( 0 ) =  Vector.fromList []
+  | getIntVector ( N:int) = Vector.fromList(getIntTable(N));
+
+fun getIntInfVector ( 0 ) = Vector.fromList []
+  | getIntInfVector ( N:int) = Vector.fromList(getIntInfTable(N));
+
+
+(*****Begin*****)
+val n = getInt();
+val m = getInt();
+val t = getInt();
+val edge = Array2.array(n,n,0);
+val dist = Array.array(n,0x3fffffff);
+val vst = Array.array(n,0);
+val ss = Array.update(dist,t-1,0);
+val inpu(x) = 
+let 
+	val a = getInt() -1;
+	val b = getInt() -1;
+	val c = getInt();
+	val k = Array2.sub(edge,a,b);
+	vam minn = Int.min(c,k);
+	val ss = Array2.update(edge,a,b,minn);
+	val ss = Array2.update(edge,b,a,minn);
+in 0 end;
+val ss = List.tabulate(m,inpu);
+fun findshortest (minn,s,len,node) = if(s = len) then node
+else let
+	val short = Array.sub(dist,s)
+	val vis = Array.sub(vst,s)
+	val k = if(short < minn andalso vis = 0) then 1 else 0
+	val kk = if(k = 1) then short else minn
+	val nn = if(k = 1) then s else node
+in  findshortest(kk,s+1,len,nn) end;
+
+(*****End*****)
+
+
+
